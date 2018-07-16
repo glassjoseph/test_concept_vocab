@@ -19,6 +19,8 @@ class ConceptRepository extends ServiceEntityRepository
         parent::__construct($registry, Concept::class);
     }
 
+    // public function findAllWithTerms() {
+    // }
 
 
 

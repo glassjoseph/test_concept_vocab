@@ -29,12 +29,12 @@ class Concept
     private $conceptSources;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Term", mappedBy="concept")
+     * @ORM\OneToMany(targetEntity="App\Entity\Term", mappedBy="concept", fetch="EAGER")
      */
     private $terms;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ConceptProperties", mappedBy="concept", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ConceptProperties", mappedBy="concept", orphanRemoval=true, fetch="EAGER")
      */
     private $conceptProperties;
 
@@ -191,9 +191,8 @@ class Concept
         $terms = [];
         foreach ($this->getTerms() as $term) {
             $terms[] = $term->toArray();
-
         }
-        
+
         return array(
             "id" => $this->getID(),
             "deprecated" => $this->getDeprecated(),

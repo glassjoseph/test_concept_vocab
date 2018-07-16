@@ -28,21 +28,22 @@ class ConceptController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $concepts = $repository->findAll();
 
-        $stuff =  [];
+        $conceptArray =  [];
         foreach ($concepts as $concept) {
-            $stuff[] = $concept->toArray();
+            $conceptArray[] = $concept->toArray();
         }
-        $concept = new Concept();
-        $concept->setDeprecated(false);
+
+        // $concept = new Concept();
+        // $concept->setDeprecated(false);
 
 
         return $this->json([
             'message' => 'Welcome to the concept API!',
             'path' => 'src/Controller/ConceptController.php',
-            'concepts' => $stuff,
-            'deprecated' => $concept->getDeprecated(),
-            'categories' => $concept->getConceptCategory(),
-            'properties' => $concept->getConceptProperties()
+            'concepts' => $conceptArray,
+            // 'deprecated' => $concept->getDeprecated(),
+            // 'categories' => $concept->getConceptCategory(),
+            // 'properties' => $concept->getConceptProperties()
 
         ]);
     }

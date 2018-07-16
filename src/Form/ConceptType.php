@@ -36,7 +36,8 @@ class ConceptType extends AbstractType
     // }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder
-            ->add('deprecated', TextType::class);
+        $builder->add('deprecated', TextType::class);
+
+
     }
 }
