@@ -128,4 +128,11 @@ class Category
 
         return $this;
     }
+
+    public function toArray() {
+        return array(
+            "value" => $this->value,
+            "description" => $this->description
+        );
+    }
 }

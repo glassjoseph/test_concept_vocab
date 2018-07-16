@@ -80,7 +80,7 @@ class Concept
     {
         if (!$this->conceptSources->contains($conceptSource)) {
             $this->conceptSources[] = $conceptSource;
-            $conceptSource->setConceptId($this);
+            $conceptSource->setConcept($this);
         }
 
         return $this;
@@ -91,8 +91,8 @@ class Concept
         if ($this->conceptSources->contains($conceptSource)) {
             $this->conceptSources->removeElement($conceptSource);
             // set the owning side to null (unless already changed)
-            if ($conceptSource->getConceptId() === $this) {
-                $conceptSource->setConceptId(null);
+            if ($conceptSource->getConcept() === $this) {
+                $conceptSource->setConcept(null);
             }
         }
 
@@ -111,7 +111,7 @@ class Concept
     {
         if (!$this->terms->contains($term)) {
             $this->terms[] = $term;
-            $term->setConceptId($this);
+            $term->setConcept($this);
         }
 
         return $this;
@@ -122,8 +122,8 @@ class Concept
         if ($this->terms->contains($term)) {
             $this->terms->removeElement($term);
             // set the owning side to null (unless already changed)
-            if ($term->getConceptId() === $this) {
-                $term->setConceptId(null);
+            if ($term->getConcept() === $this) {
+                $term->setConcept(null);
             }
         }
 
@@ -142,7 +142,7 @@ class Concept
     {
         if (!$this->conceptProperties->contains($conceptProperty)) {
             $this->conceptProperties[] = $conceptProperty;
-            $conceptProperty->setConceptId($this);
+            $conceptProperty->setConcept($this);
         }
 
         return $this;
@@ -153,8 +153,8 @@ class Concept
         if ($this->conceptProperties->contains($conceptProperty)) {
             $this->conceptProperties->removeElement($conceptProperty);
             // set the owning side to null (unless already changed)
-            if ($conceptProperty->getConceptId() === $this) {
-                $conceptProperty->setConceptId(null);
+            if ($conceptProperty->getConcept() === $this) {
+                $conceptProperty->setConcept(null);
             }
         }
 
@@ -186,4 +186,20 @@ class Concept
 
         return $this;
     }
+
+    public function toArray() {
+        $terms = [];
+        foreach ($this->getTerms() as $term) {
+            $terms[] = $term->toArray();
+
+        }
+        
+        return array(
+            "id" => $this->getID(),
+            "deprecated" => $this->getDeprecated(),
+            "terms" => $terms
+        );
+    }
+
+
 }

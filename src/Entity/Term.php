@@ -72,4 +72,12 @@ class Term
 
         return $this;
     }
+
+    public function toArray() {
+        return array(
+            "term_text" => $this->term_text,
+            "concept" => $this->concept->getID(),
+            "preferred" => $this->preferred
+        );
+    }
 }
