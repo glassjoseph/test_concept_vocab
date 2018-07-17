@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+// check
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 
 // use Symfony\Bundle\FrameworkBundle\Controller\Controller; ?
 
@@ -55,6 +58,7 @@ class ConceptController extends AbstractController
 
 
      // * @Route("/concepts/new/{term_text}.{age}.{gender}", defaults={"term_text"="Americans", "preferred"=0}, methods={"GET"}, name="new_concept")
+    // public function new(Request $request, Concept $concept)  Try with Concept $concept, and services.yml?
     public function new(Request $request)
 
     {
@@ -140,7 +144,25 @@ class ConceptController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/concepts/{id}/delete", name="delete_concept")
+     */
+    // public function delete(Request $request, Concept $concept) {
+    public function delete(Request $request, int $id) {
 
+        $repository = $this->getDoctrine()->getRepository(Concept::class);
+        $concept = $repository->find($id);
+
+        if (!$concept)
+            throw $this->createNotFoundException("The concept does not exist");
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($concept);
+        $em->flush();
+
+
+        return $this->redirectToRoute('concepts');
+    }
 
 
 }
