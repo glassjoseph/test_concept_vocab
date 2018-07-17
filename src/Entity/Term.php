@@ -74,9 +74,11 @@ class Term
     }
 
     public function toArray() {
+        $concept = $this->concept;
+        $concept = $concept ? $concept->getID() : null;
         return array(
             "term_text" => $this->term_text,
-            "concept" => $this->concept->getID(),
+            "concept" => $concept,
             "preferred" => $this->preferred
         );
     }

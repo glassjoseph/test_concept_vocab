@@ -50,40 +50,76 @@ class ConceptController extends AbstractController
 
 
     /**
-     * @Route("/concepts/new", name="new_concept")
+     * @Route("/concepts/new", methods={"GET"}, name="new_concept")
      */
+
+
+     // * @Route("/concepts/new/{term_text}.{age}.{gender}", defaults={"term_text"="Americans", "preferred"=0}, methods={"GET"}, name="new_concept")
     public function new(Request $request)
+
     {
-        // require('/Users/josephglass/.composer/vendor/autoload.php');
-        // \Psy\Shell::debug(get_defined_vars(), $this);
+        $repository = $this->getDoctrine()->getRepository(Concept::class);
 
-        $concept = new Concept();
-        $form = $this->createForm(ConceptType::class, $concept);
+        $entityManager = $this->getDoctrine()->getManager();
 
-        // handle submit (on POST only)
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($concept);
-            $entityManager->flush();
+        require('/Users/josephglass/.composer/vendor/autoload.php');
+        \Psy\Shell::debug(get_defined_vars(), $this);
 
-            return $this->redirectToRoute("concepts");
+
+
+        $termText = $request->query->get('term_text');
+        $preferred = (bool) $request->query->get('preferred');
+        $languageID = $request->query->get('language_id');
+        $conceptID = $request->query->get('concept_id');
+
+
+        // if there is a concept, find it, otherwise make it.
+        // if ($repository )
+        if ($conceptID) {
+            $concept = $repository->find($conceptID);
+        } else {
+            $concept = new Concept();
         }
 
+        $term = new Term();
+        $term->setTermText($termText);
+        $term->setPreferred($preferred);
 
+        $concept->addTerm($term);
+        $entityManager->persist($concept);
+        $entityManager->persist($term);
 
+        $entityManager->flush();
 
-        // $formFactory = Forms::createFormFactory();
+        return $this->redirectToRoute("concepts");
 
-        return $this->render(
-            'concept_form.html.twig',
-            array('form' => $form->createView())
-        );
-
-        return $this->json([
-            'message' => 'Welcome to the concept API!',
-            'path' => 'src/Controller/ConceptController.php',
-        ]);
+        //
+        // // $form = $this->createForm(ConceptType::class, $concept);
+        //
+        // // handle submit (on POST only)
+        // $form->handleRequest($request);
+        // if ($form->isSubmitted() && $form->isValid()) {
+        //     $entityManager = $this->getDoctrine()->getManager();
+        //     $entityManager->persist($concept);
+        //     $entityManager->flush();
+        //
+        //     return $this->redirectToRoute("concepts");
+        // }
+        //
+        //
+        //
+        //
+        // // $formFactory = Forms::createFormFactory();
+        //
+        // return $this->render(
+        //     'concept_form.html.twig',
+        //     array('form' => $form->createView())
+        // );
+        //
+        // return $this->json([
+        //     'message' => 'Welcome to the concept API!',
+        //     'path' => 'src/Controller/ConceptController.php',
+        // ]);
     }
 
 
@@ -103,6 +139,8 @@ class ConceptController extends AbstractController
             'path' => 'src/Controller/ConceptController.php',
         ]);
     }
+
+
 
 
 }
