@@ -43,12 +43,32 @@ class Concept
      */
     private $concept_category;
 
+
+    /**
+     * Concepts have related Concepts
+     * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="relatedConcepts")
+     *
+     *
+     */
+     private $myRelatedConcepts;
+
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Concept", inversedBy="myRelatedConcepts")
+     * @ORM\JoinTable(name="related_concept",
+     *      joinColumns={@ORM\JoinColumn(name="concept_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="related_id", referencedColumnName="id")}
+     *      )
+     */
+     private $relatedConcepts;
+
     public function __construct()
     {
         $this->conceptSources = new ArrayCollection();
         $this->terms = new ArrayCollection();
         $this->conceptProperties = new ArrayCollection();
         $this->concept_category = new ArrayCollection();
+        $this->relatedConcepts = new ArrayCollection();
     }   // check to ensure defaults carry through
 
     public function getId()
@@ -187,17 +207,57 @@ class Concept
         return $this;
     }
 
-    public function toArray() {
+    public function toArray($related=false) {
         $terms = [];
         foreach ($this->getTerms() as $term) {
             $terms[] = $term->toArray();
         }
 
-        return array(
+        $array = [
             "id" => $this->getID(),
+            "terms" => $terms,
             "deprecated" => $this->getDeprecated(),
-            "terms" => $terms
-        );
+
+        ];
+
+        if ($related) {
+            $relatedConcepts = [];
+            foreach ($this->getRelatedConcepts() as $relatedConcept) {
+                $relatedConcepts[] = $relatedConcept->toArray();  // will probably want preferred term
+            }
+
+            $array["related_concepts"] = $relatedConcepts;
+        }
+
+        return $array;
+    }
+
+    /**
+     * @return Collection|Concept[]
+     */
+    public function getRelatedConcepts(): Collection
+    {
+        return $this->relatedConcepts;
+    }
+
+    public function addRelatedConcept(Concept $relatedConcept): self
+    {
+        if (!$this->relatedConcepts->contains($relatedConcept)) {
+            $this->relatedConcepts[] = $relatedConcept;
+            $relatedConcept->addRelatedConcept($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRelatedConcept(Concept $relatedConcept): self
+    {
+        if ($this->relatedConcepts->contains($relatedConcept)) {
+            $this->relatedConcepts->removeElement($relatedConcept);
+            $relatedConcept->removeRelatedConcept($this);
+        }
+
+        return $this;
     }
 
 

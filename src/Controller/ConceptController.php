@@ -53,38 +53,39 @@ class ConceptController extends AbstractController
 
 
     /**
+     * @Route("/concept/{id}", name="concept")
+     */
+
+    /**
      * @Route("/concepts/new", methods={"GET"}, name="new_concept")
      */
 
 
      // * @Route("/concepts/new/{term_text}.{age}.{gender}", defaults={"term_text"="Americans", "preferred"=0}, methods={"GET"}, name="new_concept")
     // public function new(Request $request, Concept $concept)  Try with Concept $concept, and services.yml?
-    public function new(Request $request)
-
-    {
+    public function new(Request $request) {
         $repository = $this->getDoctrine()->getRepository(Concept::class);
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        require('/Users/josephglass/.composer/vendor/autoload.php');
-        \Psy\Shell::debug(get_defined_vars(), $this);
+        // require('/Users/josephglass/.composer/vendor/autoload.php');
+        // \Psy\Shell::debug(get_defined_vars(), $this);
 
 
 
-        $termText = $request->query->get('term_text');
-        $preferred = (bool) $request->query->get('preferred');
-        $languageID = $request->query->get('language_id');
         $conceptID = $request->query->get('concept_id');
+        $termText = $request->query->get('term_text');
+        $preferred = $request->query->get('preferred') === 'true';
+        $languageID = $request->query->get('language_id');
 
 
         // if there is a concept, find it, otherwise make it.
-        // if ($repository )
-        if ($conceptID) {
+        if ($conceptID)
             $concept = $repository->find($conceptID);
-        } else {
-            $concept = new Concept();
-        }
 
+        $concept = $concept ?? new Concept();
+
+        // TODO: find or create new term
         $term = new Term();
         $term->setTermText($termText);
         $term->setPreferred($preferred);
@@ -96,34 +97,6 @@ class ConceptController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute("concepts");
-
-        //
-        // // $form = $this->createForm(ConceptType::class, $concept);
-        //
-        // // handle submit (on POST only)
-        // $form->handleRequest($request);
-        // if ($form->isSubmitted() && $form->isValid()) {
-        //     $entityManager = $this->getDoctrine()->getManager();
-        //     $entityManager->persist($concept);
-        //     $entityManager->flush();
-        //
-        //     return $this->redirectToRoute("concepts");
-        // }
-        //
-        //
-        //
-        //
-        // // $formFactory = Forms::createFormFactory();
-        //
-        // return $this->render(
-        //     'concept_form.html.twig',
-        //     array('form' => $form->createView())
-        // );
-        //
-        // return $this->json([
-        //     'message' => 'Welcome to the concept API!',
-        //     'path' => 'src/Controller/ConceptController.php',
-        // ]);
     }
 
 
@@ -163,6 +136,114 @@ class ConceptController extends AbstractController
 
         return $this->redirectToRoute('concepts');
     }
+
+
+    // ParamConverter("concept", class="Concept")
+
+    /**
+     * @Route("/concepts/{id}/add_related", methods={"GET"}, name="add_related")
+     */
+    public function addRelated(Request $request, Concept $concept) {
+        $repository = $this->getDoctrine()->getRepository(Concept::class);
+        $entityManager = $this->getDoctrine()->getManager();
+
+
+        // $conceptID = $request->query->get('concept_id');
+        $relatedID = $request->query->get('related_id');
+
+
+        $relatedConcept = $repository->find($relatedID);
+
+        require('/Users/josephglass/.composer/vendor/autoload.php');
+        \Psy\Shell::debug(get_defined_vars(), $this);
+
+        $concept->addRelatedConcept($relatedConcept);
+        // $entityManager->persist($concept);
+        // $entityManager->persist($relatedConcept);
+        // // Check: Are both necessary? Or only have to persist one?
+        // $entityManager->flush();
+
+
+
+
+        //dg2015060859
+        //"preferred": "Blacks"
+
+
+
+        return $this->json([
+            'message' => 'Welcome to the concept API!',
+            'path' => 'src/Controller/ConceptController.php',
+            'concept' => $concept->toArray()
+        ]);
+
+
+
+        // $termText = $request->query->get('term_text');
+        // $preferred = (bool) $request->query->get('preferred');
+        // $languageID = $request->query->get('language_id');
+        // $conceptID = $request->query->get('concept_id');
+        //
+        //
+        // // if there is a concept, find it, otherwise make it.
+        // if ($conceptID)
+        //     $concept = $repository->find($conceptID);
+        //
+        // $concept = $concept ?? new Concept();
+        //
+        // $term = new Term();
+        // $term->setTermText($termText);
+        // $term->setPreferred($preferred);
+        //
+        // $concept->addTerm($term);
+        // $entityManager->persist($concept);
+        // $entityManager->persist($term);
+        //
+        // $entityManager->flush();
+        //
+        // return $this->redirectToRoute("concepts");
+        //
+        // //
+        // // return $this->json([
+        // //     'message' => 'Welcome to the concept API!',
+        // //     'path' => 'src/Controller/ConceptController.php',
+        // // ]);
+    }
+
+    /**
+    * @Route("/concepts/{id}", name="concept")
+    */
+    public function show(Concept $concept) {
+        $repository = $this->getDoctrine()->getRepository(Concept::class);
+        $entityManager = $this->getDoctrine()->getManager();
+
+        require('/Users/josephglass/.composer/vendor/autoload.php');
+        \Psy\Shell::debug(get_defined_vars(), $this);
+        
+        $terms = [];
+        foreach ($concept->getTerms() as $term) {
+            $terms[] = $term->toArray();
+        }
+
+        // $relatedConcepts = [];
+        // foreach ($concept->getRelatedConcepts() as $relatedConcept) {
+        //     $relatedConcepts[] = $relatedConcept->getTerms()->first()->toArray();  // will probably want preferred term
+        // }
+
+
+
+        return $this->json([
+            'message' => 'Welcome to the concept API!',
+            'path' => 'src/Controller/ConceptController.php',
+            'concept' => $concept->toArray(true),
+            // 'deprecated' => $concept->getDeprecated(),
+            // 'categories' => $concept->getConceptCategory(),
+            // 'properties' => $concept->getConceptProperties(),
+            // 'terms' => $terms,
+            // 'relatedConcepts' => $relatedConcepts
+        ]);
+    }
+
 
 
 }
