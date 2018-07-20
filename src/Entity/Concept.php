@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ConceptRepository")
@@ -63,7 +65,7 @@ class Concept
      private $relatedConcepts;
 
     public function __construct()
-    {
+{
         $this->conceptSources = new ArrayCollection();
         $this->terms = new ArrayCollection();
         $this->conceptProperties = new ArrayCollection();
@@ -72,17 +74,17 @@ class Concept
     }   // check to ensure defaults carry through
 
     public function getId()
-    {
+{
         return $this->id;
     }
 
     public function getDeprecated(): ?bool
-    {
+{
         return $this->deprecated;
     }
 
     public function setDeprecated(bool $deprecated): self
-    {
+{
         $this->deprecated = $deprecated;
 
         return $this;
@@ -92,12 +94,12 @@ class Concept
      * @return Collection|ConceptSource[]
      */
     public function getConceptSources(): Collection
-    {
+{
         return $this->conceptSources;
     }
 
     public function addConceptSource(ConceptSource $conceptSource): self
-    {
+{
         if (!$this->conceptSources->contains($conceptSource)) {
             $this->conceptSources[] = $conceptSource;
             $conceptSource->setConcept($this);
@@ -107,7 +109,7 @@ class Concept
     }
 
     public function removeConceptSource(ConceptSource $conceptSource): self
-    {
+{
         if ($this->conceptSources->contains($conceptSource)) {
             $this->conceptSources->removeElement($conceptSource);
             // set the owning side to null (unless already changed)
@@ -123,12 +125,12 @@ class Concept
      * @return Collection|Term[]
      */
     public function getTerms(): Collection
-    {
+{
         return $this->terms;
     }
 
     public function addTerm(Term $term): self
-    {
+{
         if (!$this->terms->contains($term)) {
             $this->terms[] = $term;
             $term->setConcept($this);
@@ -138,7 +140,7 @@ class Concept
     }
 
     public function removeTerm(Term $term): self
-    {
+{
         if ($this->terms->contains($term)) {
             $this->terms->removeElement($term);
             // set the owning side to null (unless already changed)
@@ -154,12 +156,12 @@ class Concept
      * @return Collection|ConceptProperties[]
      */
     public function getConceptProperties(): Collection
-    {
+{
         return $this->conceptProperties;
     }
 
     public function addConceptProperty(ConceptProperties $conceptProperty): self
-    {
+{
         if (!$this->conceptProperties->contains($conceptProperty)) {
             $this->conceptProperties[] = $conceptProperty;
             $conceptProperty->setConcept($this);
@@ -169,7 +171,7 @@ class Concept
     }
 
     public function removeConceptProperty(ConceptProperties $conceptProperty): self
-    {
+{
         if ($this->conceptProperties->contains($conceptProperty)) {
             $this->conceptProperties->removeElement($conceptProperty);
             // set the owning side to null (unless already changed)
@@ -185,12 +187,12 @@ class Concept
      * @return Collection|Category[]
      */
     public function getConceptCategory(): Collection
-    {
+{
         return $this->concept_category;
     }
 
     public function addConceptCategory(Category $conceptCategory): self
-    {
+{
         if (!$this->concept_category->contains($conceptCategory)) {
             $this->concept_category[] = $conceptCategory;
         }
@@ -199,7 +201,7 @@ class Concept
     }
 
     public function removeConceptCategory(Category $conceptCategory): self
-    {
+{
         if ($this->concept_category->contains($conceptCategory)) {
             $this->concept_category->removeElement($conceptCategory);
         }
@@ -236,12 +238,12 @@ class Concept
      * @return Collection|Concept[]
      */
     public function getRelatedConcepts(): Collection
-    {
+{
         return $this->relatedConcepts;
     }
 
     public function addRelatedConcept(Concept $relatedConcept): self
-    {
+{
         if (!$this->relatedConcepts->contains($relatedConcept)) {
             $this->relatedConcepts[] = $relatedConcept;
             $relatedConcept->addRelatedConcept($this);
@@ -251,7 +253,7 @@ class Concept
     }
 
     public function removeRelatedConcept(Concept $relatedConcept): self
-    {
+{
         if ($this->relatedConcepts->contains($relatedConcept)) {
             $this->relatedConcepts->removeElement($relatedConcept);
             $relatedConcept->removeRelatedConcept($this);

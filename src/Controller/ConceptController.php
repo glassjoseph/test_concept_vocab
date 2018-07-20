@@ -65,17 +65,15 @@ class ConceptController extends AbstractController
     /**
      * @Route("/concepts/new", methods={"GET"}, name="new_concept")
      */
-
-
-     // * @Route("/concepts/new/{term_text}.{age}.{gender}", defaults={"term_text"="Americans", "preferred"=0}, methods={"GET"}, name="new_concept")
+    // * @Route("/concepts/new/{term_text}.{age}.{gender}", defaults={"term_text"="Americans", "preferred"=0}, methods={"GET"}, name="new_concept")
     // public function new(Request $request, Concept $concept)  Try with Concept $concept, and services.yml?
     public function new(Request $request) {
         $repository = $this->getDoctrine()->getRepository(Concept::class);
 
         $entityManager = $this->getDoctrine()->getManager();
 
-        // require('/Users/josephglass/.composer/vendor/autoload.php');
-        // \Psy\Shell::debug(get_defined_vars(), $this);
+        require('/Users/josephglass/.composer/vendor/autoload.php');
+        \Psy\Shell::debug(get_defined_vars(), $this);
 
 
 
@@ -133,7 +131,7 @@ class ConceptController extends AbstractController
         $concept = $repository->find($id);
 
         if (!$concept)
-            throw $this->createNotFoundException("The concept does not exist");
+            throw $this->createNotFoundException("The concept does not exist"); // if we change this to find concept by type hinting, how do we control 404 error?
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($concept);
@@ -141,6 +139,35 @@ class ConceptController extends AbstractController
 
 
         return $this->redirectToRoute('concepts');
+    }
+
+    /**
+     * @Route("/concepts/{id}/edit", name="edit_concept")
+     */
+    public function edit(Request $request, Concept $concept) {
+
+        $repository = $this->getDoctrine()->getRepository(Concept::class);
+
+        // $conceptID = $request->query->get('concept_id');
+
+        $termText = $request->query->get('term_text');
+        $preferred = $request->query->get('preferred');
+        $languageID = $request->query->get('language_id');
+
+
+        // TODO: find or create new term
+        $term = new Term();
+        $term->setTermText($termText);
+        $term->setPreferred($preferred);
+
+        $concept->addTerm($term);
+        $entityManager->persist($concept);
+        $entityManager->persist($term);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute("concepts/{$id}");
+
     }
 
     /**
@@ -166,20 +193,11 @@ class ConceptController extends AbstractController
         // // Check: Are both necessary? Or only have to persist one?
         // $entityManager->flush();
 
-
-
-
-        //dg2015060859
-        //"preferred": "Blacks"
-
-
-
         return $this->json([
             'message' => 'Welcome to the concept API!',
             'path' => 'src/Controller/ConceptController.php',
             'concept' => $concept->toArray()
         ]);
-
 
 
         // $termText = $request->query->get('term_text');
