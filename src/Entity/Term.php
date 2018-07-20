@@ -73,10 +73,11 @@ class Term
         return $this;
     }
 
-    public function toArray() {
+    public function toArray(): array {
         $concept = $this->concept;
         $concept = $concept ? $concept->getID() : null;
         return array(
+            "id" => $this->getID(),
             "term_text" => $this->term_text,
             "concept" => $concept,
             "preferred" => $this->preferred

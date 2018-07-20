@@ -207,7 +207,7 @@ class Concept
         return $this;
     }
 
-    public function toArray($related=false) {
+    public function toArray($includeRelated=false): array {
         $terms = [];
         foreach ($this->getTerms() as $term) {
             $terms[] = $term->toArray();
@@ -215,12 +215,12 @@ class Concept
 
         $array = [
             "id" => $this->getID(),
-            "terms" => $terms,
             "deprecated" => $this->getDeprecated(),
+            "terms" => $terms,
 
         ];
 
-        if ($related) {
+        if ($includeRelated) {
             $relatedConcepts = [];
             foreach ($this->getRelatedConcepts() as $relatedConcept) {
                 $relatedConcepts[] = $relatedConcept->toArray();  // will probably want preferred term

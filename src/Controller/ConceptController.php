@@ -18,43 +18,49 @@ use App\Entity\Concept;
 use App\Entity\Category;
 use App\Entity\Term;
 
+use App\Repository\ConceptRepository;
+use App\Repository\CategoryRepository;
+use App\Repository\TermRepository;
+
 class ConceptController extends AbstractController
 {
     /**
      * @Route("/concepts", name="concepts")
      */
-    public function index()
+    public function index(ConceptRepository $concepts)
     {
-
-        $repository = $this->getDoctrine()->getRepository(Concept::class);
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $concepts = $repository->findAll();
-
+        // $repository = $this->getDoctrine()->getRepository(Concept::class);
         $conceptArray =  [];
-        foreach ($concepts as $concept) {
-            $conceptArray[] = $concept->toArray();
+        foreach ($concepts->findAll() as $concept) {
+            $term = $concept->getTerms()[0];
+            $conceptArray[] = ['id' => $concept->getID(), 'term' => $term ? $term->getTermText() : null];
         }
-
-        // $concept = new Concept();
-        // $concept->setDeprecated(false);
-
 
         return $this->json([
             'message' => 'Welcome to the concept API!',
             'path' => 'src/Controller/ConceptController.php',
             'concepts' => $conceptArray,
-            // 'deprecated' => $concept->getDeprecated(),
-            // 'categories' => $concept->getConceptCategory(),
-            // 'properties' => $concept->getConceptProperties()
+        ]);
+    }
 
+    /**
+     * @Route("/concepts_details", name="concepts_details")
+     */
+    public function index_details(ConceptRepository $concepts)
+    {
+        $conceptArray =  [];
+        foreach ($concepts->findAll() as $concept) {
+            $conceptArray[] = $concept->toArray();
+        }
+
+        return $this->json([
+            'message' => 'Welcome to the concept API!',
+            'path' => 'src/Controller/ConceptController.php',
+            'concepts' => $conceptArray,
         ]);
     }
 
 
-    /**
-     * @Route("/concept/{id}", name="concept")
-     */
 
     /**
      * @Route("/concepts/new", methods={"GET"}, name="new_concept")
@@ -137,9 +143,6 @@ class ConceptController extends AbstractController
         return $this->redirectToRoute('concepts');
     }
 
-
-    // ParamConverter("concept", class="Concept")
-
     /**
      * @Route("/concepts/{id}/add_related", methods={"GET"}, name="add_related")
      */
@@ -217,29 +220,23 @@ class ConceptController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Concept::class);
         $entityManager = $this->getDoctrine()->getManager();
 
-        require('/Users/josephglass/.composer/vendor/autoload.php');
-        \Psy\Shell::debug(get_defined_vars(), $this);
-        
-        $terms = [];
-        foreach ($concept->getTerms() as $term) {
-            $terms[] = $term->toArray();
-        }
+        // require('/Users/josephglass/.composer/vendor/autoload.php');
+        // \Psy\Shell::debug(get_defined_vars(), $this);
+        //
+        // $terms = [];
+        // foreach ($concept->getTerms() as $term) {
+        //     $terms[] = $term->toArray();
+        // }
 
         // $relatedConcepts = [];
         // foreach ($concept->getRelatedConcepts() as $relatedConcept) {
-        //     $relatedConcepts[] = $relatedConcept->getTerms()->first()->toArray();  // will probably want preferred term
+        //     $relatedConcepts[] = [$relatedConcept->getTerms()->first()->getID() => $relatedConcept->getTerms()->first()->getTermText()];  // will probably want preferred term
         // }
-
-
 
         return $this->json([
             'message' => 'Welcome to the concept API!',
             'path' => 'src/Controller/ConceptController.php',
             'concept' => $concept->toArray(true),
-            // 'deprecated' => $concept->getDeprecated(),
-            // 'categories' => $concept->getConceptCategory(),
-            // 'properties' => $concept->getConceptProperties(),
-            // 'terms' => $terms,
             // 'relatedConcepts' => $relatedConcepts
         ]);
     }
