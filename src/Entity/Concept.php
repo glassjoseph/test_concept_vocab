@@ -62,6 +62,27 @@ class Concept
      */
      private $relatedConcepts;
 
+     /**
+      * @ORM\ManyToMany(targetEntity="App\Entity\Concept")
+      * @ORM\JoinTable(name="broader_concept",
+      *     joinColumns={@ORM\JoinColumn(name="narrower_id", referencedColumnName="id")},
+      *     inverseJoinColumns={@ORM\JoinColumn(name="broader_id", referencedColumnName="id")})
+      */
+     private $broaderConcepts;
+
+     /**
+      * @ORM\ManyToMany(targetEntity="App\Entity\Concept")
+      * @ORM\JoinTable(name="broader_concept",
+      *     joinColumns={@ORM\JoinColumn(name="broader_id", referencedColumnName="id")},
+      *     inverseJoinColumns={@ORM\JoinColumn(name="narrower_id", referencedColumnName="id")})
+      */
+     private $narrowerConcepts;
+
+     // not needed for narrower?
+     // * @ORM\JoinTable(name="broader_concept",
+     // *     joinColumns={@ORM\JoinColumn(name="narrower_id", referencedColumnName="id")},
+     // *     inverseJoinColumns={@ORM\JoinColumn(name="broader_id", referencedColumnName="id")})
+
     public function __construct()
     {
         $this->conceptSources = new ArrayCollection();
@@ -69,6 +90,7 @@ class Concept
         $this->conceptProperties = new ArrayCollection();
         $this->concept_category = new ArrayCollection();
         $this->relatedConcepts = new ArrayCollection();
+        $this->broaderConcepts = new ArrayCollection();
     }   // check to ensure defaults carry through
 
     public function getId()
@@ -222,11 +244,23 @@ class Concept
 
         if ($includeRelated) {
             $relatedConcepts = [];
+            $broaderConcepts = [];
+            $narrowerConcepts = [];
+
             foreach ($this->getRelatedConcepts() as $relatedConcept) {
                 $relatedConcepts[] = $relatedConcept->toArray();  // will probably want preferred term
             }
+            foreach ($this->getBroaderConcepts() as $broaderConcept) {
+                $broaderConcepts[] = $broaderConcept->toArray();
+            }
+            foreach ($this->getNarrowerConcepts() as $narrowerConcept) {
+                $narrowerConcepts[] = $narrowerConcept->toArray();
+            }
+
 
             $array["related_concepts"] = $relatedConcepts;
+            $array["broader_concepts"] = $broaderConcepts;
+            $array["narrower_concepts"] = $narrowerConcepts;
         }
 
         return $array;
@@ -255,6 +289,60 @@ class Concept
         if ($this->relatedConcepts->contains($relatedConcept)) {
             $this->relatedConcepts->removeElement($relatedConcept);
             $relatedConcept->removeRelatedConcept($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Concept[]
+     */
+     // TODO: Can we have multiple broader concepts? If yes, rename
+    public function getBroaderConcepts(): Collection
+    {
+        return $this->broaderConcepts;
+    }
+
+    public function addBroaderConcept(Concept $broaderConcept): self
+    {
+        if (!$this->broaderConcepts->contains($broaderConcept)) {
+            $this->broaderConcepts[] = $broaderConcept;
+            // $broaderConcept->addNarrowerConcept($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBroaderConcept(Concept $broaderConcept): self
+    {
+        if ($this->broaderConcepts->contains($broaderConcept)) {
+            $this->broaderConcepts->removeElement($broaderConcept);
+            $broaderConcept->removeBroaderConcept($this);
+        }
+
+        return $this;
+    }
+
+    public function getNarrowerConcepts(): Collection
+    {
+        return $this->narrowerConcepts;
+    }
+
+    public function addNarrowerConcept(Concept $narrowerConcept): self
+    {
+        if (!$this->narrowerConcepts->contains($narrowerConcept)) {
+            $this->narrowerConcepts[] = $narrowerConcept;
+            // $narrowerConcept->addBroaderConcept($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNarrowerConcept(Concept $narrowerConcept): self
+    {
+        if ($this->narrowerConcepts->contains($narrowerConcept)) {
+            $this->narrowerConcepts->removeElement($narrowerConcept);
+            $narrowerConcept->removeBroaderConcept($this);
         }
 
         return $this;

@@ -32,7 +32,7 @@ class TermController extends AbstractController {
             $termArray[] = $term->toArray();
         }
 
-        
+
         return $this->json([
             'path' => 'src/Controller/TermController.php',
             'terms' => $termArray,
@@ -60,7 +60,6 @@ class TermController extends AbstractController {
     /**
      * @Route("/terms/new", methods={"GET"}, name="new_term")
      */
-    // * @Route("/terms/new/{term_text}.{age}.{gender}", defaults={"term_text"="Americans", "preferred"=0}, methods={"GET"}, name="new_term")
     public function new(Request $request) {
         $repository = $this->getDoctrine()->getRepository(Term::class);
 
@@ -76,12 +75,6 @@ class TermController extends AbstractController {
         $preferred = $request->query->get('preferred') === 'true';
         $languageID = $request->query->get('language_id');
 
-
-        // if there is a concept, find it, otherwise make it.
-        if ($termID)
-            $term = $repository->find($termID);
-
-        $term = $term ?? new Concept();
 
         // TODO: find or create new term
         $term = new Term();
@@ -146,12 +139,12 @@ class TermController extends AbstractController {
 
         $entityManager->flush();
 
-        return $this->redirectToRoute("terms/{$id}");
+        return $this->redirectToRoute("term");
     }
 
 
     /**
-    * @Route("/terms/{id}", name="concept")
+    * @Route("/terms/{id}", name="term")
     */
     public function show(Term $term) {
 

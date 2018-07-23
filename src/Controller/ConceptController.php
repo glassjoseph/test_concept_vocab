@@ -66,7 +66,6 @@ class ConceptController extends AbstractController
      * @Route("/concepts/new", methods={"GET"}, name="new_concept")
      */
     // * @Route("/concepts/new/{term_text}.{age}.{gender}", defaults={"term_text"="Americans", "preferred"=0}, methods={"GET"}, name="new_concept")
-    // public function new(Request $request, Concept $concept)  Try with Concept $concept, and services.yml?
     public function new(Request $request) {
         $repository = $this->getDoctrine()->getRepository(Concept::class);
 
@@ -229,6 +228,35 @@ class ConceptController extends AbstractController
         // //     'message' => 'Welcome to the concept API!',
         // //     'path' => 'src/Controller/ConceptController.php',
         // // ]);
+    }
+
+    /**
+     * @Route("/concepts/{id}/add_broader", methods={"GET"}, name="add_broader")
+     */
+    public function addBroader(Request $request, Concept $concept) {
+        $repository = $this->getDoctrine()->getRepository(Concept::class);
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $broaderID = $request->query->get('broader_id');
+
+        $broaderConcept = $repository->find($broaderID);
+
+        $concept->addBroaderConcept($broaderConcept);
+
+        $entityManager->flush();
+
+        $broaders = [];
+
+        foreach ($concept->getBroaderConcepts() as $bconcept) {
+            $broaders[] = $bconcept->toArray();
+        }
+        return $this->json([
+            'message' => 'Welcome to addBroader!',
+            'path' => 'src/Controller/ConceptController.php',
+            'concept' => $concept->toArray(),
+            'broaders' => $broaders
+        ]);
+
     }
 
     /**
