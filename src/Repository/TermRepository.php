@@ -17,6 +17,19 @@ class TermRepository extends ServiceEntityRepository {
         parent::__construct($registry, Term::class);
     }
 
+    /**
+     * @return Term[] Returns an array of Term objects
+     */
+    public function findByText($text) {
+        return $this->createQueryBuilder('t')
+            ->andWhere('lower(t.term_text) LIKE lower(:text)')
+            ->setParameter('text', $text)
+            ->setMaxResults(20)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Term[] Returns an array of Term objects
 //     */

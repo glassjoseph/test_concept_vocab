@@ -144,13 +144,33 @@ class TermController extends AbstractController {
 
 
     /**
+    * @Route("/terms/search", name="term_search")
+    */
+    public function search(Request $request, TermRepository $terms) {
+        $q = $request->query->get('q');
+        // require('/Users/josephglass/.composer/vendor/autoload.php');
+        // \Psy\Shell::debug(get_defined_vars(), $this);
+
+        $termArray = [];
+        foreach ($terms->findByText($q) as $term) {
+            $termArray[] = $term->toArray();
+        }
+
+        return $this->json([
+            'path' => 'src/Controller/TermController.php',
+            // 'term' => $term->toArray(true),
+            'terms' => $termArray
+        ]);
+    }
+
+    /**
     * @Route("/terms/{id}", name="term")
     */
     public function show(Term $term) {
 
         return $this->json([
             'path' => 'src/Controller/TermController.php',
-            'concept' => $term->toArray(true),
+            'term' => $term->toArray(true),
         ]);
     }
 
