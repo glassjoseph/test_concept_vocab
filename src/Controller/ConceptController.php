@@ -129,7 +129,11 @@ class ConceptController extends AbstractController {
             throw $this->createNotFoundException("The concept does not exist"); // if we change this to find concept by type hinting, how do we control 404 error?
 
         $em = $this->getDoctrine()->getManager();
+        foreach ($concept->getTerms() as $term) {
+            $em->remove($term);
+        }
         $em->remove($concept);
+
         $em->flush();
 
 
