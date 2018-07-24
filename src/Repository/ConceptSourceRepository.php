@@ -12,10 +12,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method ConceptSource[]    findAll()
  * @method ConceptSource[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ConceptSourceRepository extends ServiceEntityRepository
-{
-    public function __construct(RegistryInterface $registry)
-    {
+class ConceptSourceRepository extends ServiceEntityRepository {
+    public function __construct(RegistryInterface $registry) {
         parent::__construct($registry, ConceptSource::class);
     }
 
@@ -23,8 +21,7 @@ class ConceptSourceRepository extends ServiceEntityRepository
 //     * @return ConceptSource[] Returns an array of ConceptSource objects
 //     */
     /*
-    public function findByExampleField($value)
-    {
+    public function findByExampleField($value) {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')
             ->setParameter('val', $value)
@@ -37,8 +34,7 @@ class ConceptSourceRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ConceptSource
-    {
+    public function findOneBySomeField($value): ?ConceptSource {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')
             ->setParameter('val', $value)

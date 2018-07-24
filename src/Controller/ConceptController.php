@@ -22,13 +22,11 @@ use App\Repository\ConceptRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\TermRepository;
 
-class ConceptController extends AbstractController
-{
+class ConceptController extends AbstractController {
     /**
      * @Route("/concepts", name="concepts")
      */
-    public function index(ConceptRepository $concepts)
-    {
+    public function index(ConceptRepository $concepts) {
         // $repository = $this->getDoctrine()->getRepository(Concept::class);
         $conceptArray =  [];
         foreach ($concepts->findAll() as $concept) {
@@ -46,8 +44,7 @@ class ConceptController extends AbstractController
     /**
      * @Route("/concepts_details", name="concepts_details")
      */
-    public function index_details(ConceptRepository $concepts)
-    {
+    public function index_details(ConceptRepository $concepts) {
         $conceptArray =  [];
         foreach ($concepts->findAll() as $concept) {
             $conceptArray[] = $concept->toArray();
@@ -106,8 +103,7 @@ class ConceptController extends AbstractController
     /**
      * @Route("/concepts/create", name="create_concept")
      */
-    public function create()
-    {
+    public function create() {
         require('/Users/josephglass/.composer/vendor/autoload.php');
         \Psy\Shell::debug(get_defined_vars(), $this);
         $entityManager = $this->getDoctrine()->getManager();

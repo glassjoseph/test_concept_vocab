@@ -42,66 +42,55 @@ class ConceptSource
      */
     private $note;
 
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
-    public function getConcept(): ?Concept
-    {
+    public function getConcept(): ?Concept {
         return $this->concept;
     }
 
-    public function setConcept(?Concept $concept): self
-    {
+    public function setConcept(?Concept $concept): self {
         $this->concept = $concept;
 
         return $this;
     }
 
-    public function getCitation(): ?string
-    {
+    public function getCitation(): ?string {
         return $this->citation;
     }
 
-    public function setCitation(?string $citation): self
-    {
+    public function setCitation(?string $citation): self {
         $this->citation = $citation;
 
         return $this;
     }
 
-    public function getUrl(): ?string
-    {
+    public function getUrl(): ?string {
         return $this->url;
     }
 
-    public function setUrl(?string $url): self
-    {
+    public function setUrl(?string $url): self {
         $this->url = $url;
 
         return $this;
     }
 
-    public function getFoundData(): ?string
-    {
+    public function getFoundData(): ?string {
         return $this->found_data;
     }
 
-    public function setFoundData(?string $found_data): self
-    {
+    public function setFoundData(?string $found_data): self {
         $this->found_data = $found_data;
 
         return $this;
     }
 
-    public function getNote(): ?string
-    {
+    public function getNote(): ?string {
         return $this->note;
     }
 
-    public function setNote(?string $note): self
-    {
+    public function setNote(?string $note): self {
         $this->note = $note;
 
         return $this;

@@ -83,8 +83,7 @@ class Concept
      // *     joinColumns={@ORM\JoinColumn(name="narrower_id", referencedColumnName="id")},
      // *     inverseJoinColumns={@ORM\JoinColumn(name="broader_id", referencedColumnName="id")})
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->conceptSources = new ArrayCollection();
         $this->terms = new ArrayCollection();
         $this->conceptProperties = new ArrayCollection();
@@ -93,18 +92,15 @@ class Concept
         $this->broaderConcepts = new ArrayCollection();
     }   // check to ensure defaults carry through
 
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
-    public function getDeprecated(): ?bool
-    {
+    public function getDeprecated(): ?bool {
         return $this->deprecated;
     }
 
-    public function setDeprecated(bool $deprecated): self
-    {
+    public function setDeprecated(bool $deprecated): self {
         $this->deprecated = $deprecated;
 
         return $this;
@@ -113,13 +109,11 @@ class Concept
     /**
      * @return Collection|ConceptSource[]
      */
-    public function getConceptSources(): Collection
-    {
+    public function getConceptSources(): Collection {
         return $this->conceptSources;
     }
 
-    public function addConceptSource(ConceptSource $conceptSource): self
-    {
+    public function addConceptSource(ConceptSource $conceptSource): self {
         if (!$this->conceptSources->contains($conceptSource)) {
             $this->conceptSources[] = $conceptSource;
             $conceptSource->setConcept($this);
@@ -128,8 +122,7 @@ class Concept
         return $this;
     }
 
-    public function removeConceptSource(ConceptSource $conceptSource): self
-    {
+    public function removeConceptSource(ConceptSource $conceptSource): self {
         if ($this->conceptSources->contains($conceptSource)) {
             $this->conceptSources->removeElement($conceptSource);
             // set the owning side to null (unless already changed)
@@ -144,13 +137,11 @@ class Concept
     /**
      * @return Collection|Term[]
      */
-    public function getTerms(): Collection
-    {
+    public function getTerms(): Collection {
         return $this->terms;
     }
 
-    public function addTerm(Term $term): self
-    {
+    public function addTerm(Term $term): self {
         if (!$this->terms->contains($term)) {
             $this->terms[] = $term;
             $term->setConcept($this);
@@ -159,8 +150,7 @@ class Concept
         return $this;
     }
 
-    public function removeTerm(Term $term): self
-    {
+    public function removeTerm(Term $term): self {
         if ($this->terms->contains($term)) {
             $this->terms->removeElement($term);
             // set the owning side to null (unless already changed)
@@ -175,13 +165,11 @@ class Concept
     /**
      * @return Collection|ConceptProperties[]
      */
-    public function getConceptProperties(): Collection
-    {
+    public function getConceptProperties(): Collection {
         return $this->conceptProperties;
     }
 
-    public function addConceptProperty(ConceptProperties $conceptProperty): self
-    {
+    public function addConceptProperty(ConceptProperties $conceptProperty): self {
         if (!$this->conceptProperties->contains($conceptProperty)) {
             $this->conceptProperties[] = $conceptProperty;
             $conceptProperty->setConcept($this);
@@ -190,8 +178,7 @@ class Concept
         return $this;
     }
 
-    public function removeConceptProperty(ConceptProperties $conceptProperty): self
-    {
+    public function removeConceptProperty(ConceptProperties $conceptProperty): self {
         if ($this->conceptProperties->contains($conceptProperty)) {
             $this->conceptProperties->removeElement($conceptProperty);
             // set the owning side to null (unless already changed)
@@ -206,13 +193,11 @@ class Concept
     /**
      * @return Collection|Category[]
      */
-    public function getConceptCategory(): Collection
-    {
+    public function getConceptCategory(): Collection {
         return $this->concept_category;
     }
 
-    public function addConceptCategory(Category $conceptCategory): self
-    {
+    public function addConceptCategory(Category $conceptCategory): self {
         if (!$this->concept_category->contains($conceptCategory)) {
             $this->concept_category[] = $conceptCategory;
         }
@@ -220,8 +205,7 @@ class Concept
         return $this;
     }
 
-    public function removeConceptCategory(Category $conceptCategory): self
-    {
+    public function removeConceptCategory(Category $conceptCategory): self {
         if ($this->concept_category->contains($conceptCategory)) {
             $this->concept_category->removeElement($conceptCategory);
         }
@@ -269,13 +253,11 @@ class Concept
     /**
      * @return Collection|Concept[]
      */
-    public function getRelatedConcepts(): Collection
-    {
+    public function getRelatedConcepts(): Collection {
         return $this->relatedConcepts;
     }
 
-    public function addRelatedConcept(Concept $relatedConcept): self
-    {
+    public function addRelatedConcept(Concept $relatedConcept): self {
         if (!$this->relatedConcepts->contains($relatedConcept)) {
             $this->relatedConcepts[] = $relatedConcept;
             $relatedConcept->addRelatedConcept($this);
@@ -284,8 +266,7 @@ class Concept
         return $this;
     }
 
-    public function removeRelatedConcept(Concept $relatedConcept): self
-    {
+    public function removeRelatedConcept(Concept $relatedConcept): self {
         if ($this->relatedConcepts->contains($relatedConcept)) {
             $this->relatedConcepts->removeElement($relatedConcept);
             $relatedConcept->removeRelatedConcept($this);
@@ -298,13 +279,11 @@ class Concept
      * @return Collection|Concept[]
      */
      // TODO: Can we have multiple broader concepts? If yes, rename
-    public function getBroaderConcepts(): Collection
-    {
+    public function getBroaderConcepts(): Collection {
         return $this->broaderConcepts;
     }
 
-    public function addBroaderConcept(Concept $broaderConcept): self
-    {
+    public function addBroaderConcept(Concept $broaderConcept): self {
         if (!$this->broaderConcepts->contains($broaderConcept)) {
             $this->broaderConcepts[] = $broaderConcept;
             // $broaderConcept->addNarrowerConcept($this);
@@ -313,8 +292,7 @@ class Concept
         return $this;
     }
 
-    public function removeBroaderConcept(Concept $broaderConcept): self
-    {
+    public function removeBroaderConcept(Concept $broaderConcept): self {
         if ($this->broaderConcepts->contains($broaderConcept)) {
             $this->broaderConcepts->removeElement($broaderConcept);
             $broaderConcept->removeBroaderConcept($this);
@@ -323,13 +301,11 @@ class Concept
         return $this;
     }
 
-    public function getNarrowerConcepts(): Collection
-    {
+    public function getNarrowerConcepts(): Collection {
         return $this->narrowerConcepts;
     }
 
-    public function addNarrowerConcept(Concept $narrowerConcept): self
-    {
+    public function addNarrowerConcept(Concept $narrowerConcept): self {
         if (!$this->narrowerConcepts->contains($narrowerConcept)) {
             $this->narrowerConcepts[] = $narrowerConcept;
             // $narrowerConcept->addBroaderConcept($this);
@@ -338,8 +314,7 @@ class Concept
         return $this;
     }
 
-    public function removeNarrowerConcept(Concept $narrowerConcept): self
-    {
+    public function removeNarrowerConcept(Concept $narrowerConcept): self {
         if ($this->narrowerConcepts->contains($narrowerConcept)) {
             $this->narrowerConcepts->removeElement($narrowerConcept);
             $narrowerConcept->removeBroaderConcept($this);

@@ -7,8 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ConceptPropertiesRepository")
  */
-class ConceptProperties
-{
+class ConceptProperties {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -32,42 +31,35 @@ class ConceptProperties
      */
     private $value;
 
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
-    public function getConcept(): ?Concept
-    {
+    public function getConcept(): ?Concept {
         return $this->concept;
     }
 
-    public function setConcept(?Concept $concept): self
-    {
+    public function setConcept(?Concept $concept): self {
         $this->concept = $concept;
 
         return $this;
     }
 
-    public function getType(): ?string
-    {
+    public function getType(): ?string {
         return $this->type;
     }
 
-    public function setType(string $type): self
-    {
+    public function setType(string $type): self {
         $this->type = $type;
 
         return $this;
     }
 
-    public function getValue(): ?string
-    {
+    public function getValue(): ?string {
         return $this->value;
     }
 
-    public function setValue(string $value): self
-    {
+    public function setValue(string $value): self {
         $this->value = $value;
 
         return $this;

@@ -12,10 +12,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Term[]    findAll()
  * @method Term[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TermRepository extends ServiceEntityRepository
-{
-    public function __construct(RegistryInterface $registry)
-    {
+class TermRepository extends ServiceEntityRepository {
+    public function __construct(RegistryInterface $registry) {
         parent::__construct($registry, Term::class);
     }
 
@@ -23,8 +21,7 @@ class TermRepository extends ServiceEntityRepository
 //     * @return Term[] Returns an array of Term objects
 //     */
     /*
-    public function findByExampleField($value)
-    {
+    public function findByExampleField($value) {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')
             ->setParameter('val', $value)
@@ -37,8 +34,7 @@ class TermRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Term
-    {
+    public function findOneBySomeField($value): ?Term {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')
             ->setParameter('val', $value)

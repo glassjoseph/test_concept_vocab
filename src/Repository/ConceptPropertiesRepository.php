@@ -12,10 +12,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method ConceptProperties[]    findAll()
  * @method ConceptProperties[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ConceptPropertiesRepository extends ServiceEntityRepository
-{
-    public function __construct(RegistryInterface $registry)
-    {
+class ConceptPropertiesRepository extends ServiceEntityRepository {
+    public function __construct(RegistryInterface $registry) {
         parent::__construct($registry, ConceptProperties::class);
     }
 
@@ -23,8 +21,7 @@ class ConceptPropertiesRepository extends ServiceEntityRepository
 //     * @return ConceptProperties[] Returns an array of ConceptProperties objects
 //     */
     /*
-    public function findByExampleField($value)
-    {
+    public function findByExampleField($value) {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')
             ->setParameter('val', $value)
@@ -37,8 +34,7 @@ class ConceptPropertiesRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ConceptProperties
-    {
+    public function findOneBySomeField($value): ?ConceptProperties {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')
             ->setParameter('val', $value)

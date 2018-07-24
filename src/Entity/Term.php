@@ -7,8 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TermRepository")
  */
-class Term
-{
+class Term {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -32,42 +31,35 @@ class Term
      */
     private $preferred;
 
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
-    public function getConcept(): ?Concept
-    {
+    public function getConcept(): ?Concept {
         return $this->concept;
     }
 
-    public function setConcept(?Concept $concept): self
-    {
+    public function setConcept(?Concept $concept): self {
         $this->concept = $concept;
 
         return $this;
     }
 
-    public function getTermText(): ?string
-    {
+    public function getTermText(): ?string {
         return $this->term_text;
     }
 
-    public function setTermText(string $term_text): self
-    {
+    public function setTermText(string $term_text): self {
         $this->term_text = $term_text;
 
         return $this;
     }
 
-    public function getPreferred(): ?bool
-    {
+    public function getPreferred(): ?bool {
         return $this->preferred;
     }
 
-    public function setPreferred(bool $preferred): self
-    {
+    public function setPreferred(bool $preferred): self {
         $this->preferred = $preferred;
 
         return $this;
