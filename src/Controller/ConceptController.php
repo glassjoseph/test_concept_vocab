@@ -17,10 +17,12 @@ use App\Form\ConceptType;
 use App\Entity\Concept;
 use App\Entity\Category;
 use App\Entity\Term;
+use App\Entity\ConceptSource;
 
 use App\Repository\ConceptRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\TermRepository;
+use App\Repository\ConceptSourceRepository;
 
 class ConceptController extends AbstractController {
     /**
@@ -104,14 +106,15 @@ class ConceptController extends AbstractController {
      * @Route("/concepts/create", name="create_concept")
      */
     public function create() {
-        require('/Users/josephglass/.composer/vendor/autoload.php');
-        \Psy\Shell::debug(get_defined_vars(), $this);
-        $entityManager = $this->getDoctrine()->getManager();
-
+        $em = $this->getDoctrine()->getManager();
+        $concepts = $this->getDoctrine()->getRepository(Concept::class);
+        $conceptSources = $this->getDoctrine()->getRepository(ConceptSource::class);
+        $categories = $this->getDoctrine()->getRepository(Category::class);
+        $terms = $this->getDoctrine()->getRepository(Term::class);
 
 
         return $this->json([
-            'message' => 'Welcome to the concept API!',
+            'message' => 'Welcome to the concept creation API!',
             'path' => 'src/Controller/ConceptController.php',
         ]);
     }
@@ -266,9 +269,9 @@ class ConceptController extends AbstractController {
         $repository = $this->getDoctrine()->getRepository(Concept::class);
         $entityManager = $this->getDoctrine()->getManager();
 
-        // require('/Users/josephglass/.composer/vendor/autoload.php');
-        // \Psy\Shell::debug(get_defined_vars(), $this);
-        //
+        require('/Users/josephglass/.composer/vendor/autoload.php');
+        \Psy\Shell::debug(get_defined_vars(), $this);
+
         // $terms = [];
         // foreach ($concept->getTerms() as $term) {
         //     $terms[] = $term->toArray();
