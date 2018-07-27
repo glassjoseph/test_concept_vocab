@@ -24,7 +24,7 @@ class Term {
     /**
      * @ORM\Column(type="text")
      */
-    private $term_text;
+    private $value;
 
     /**
      * @ORM\Column(type="boolean")
@@ -45,12 +45,12 @@ class Term {
         return $this;
     }
 
-    public function getTermText(): ?string {
-        return $this->term_text;
+    public function getValue(): ?string {
+        return $this->value;
     }
 
-    public function setTermText(string $term_text): self {
-        $this->term_text = $term_text;
+    public function setValue(string $value): self {
+        $this->value = $value;
 
         return $this;
     }
@@ -70,7 +70,7 @@ class Term {
         $concept = $concept ? $concept->getID() : null;
         return array(
             "id" => $this->getID(),
-            "term_text" => $this->term_text,
+            "value" => $this->value,
             "concept" => $concept,
             "preferred" => $this->preferred
         );

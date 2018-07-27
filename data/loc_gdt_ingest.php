@@ -11705,7 +11705,7 @@ public function create() {
 
         //Create preferred term
         $term = new Term();
-        $term->setTermText($concept['preferred']);
+        $term->setValue($concept['preferred']);
         $term->setPreferred(true);
         $newConcept->addTerm($term);
         $em->persist($term);
@@ -11714,7 +11714,7 @@ public function create() {
         $concept['alternate'] = $concept['alternate'] ?? [];
         foreach ($concept['alternate'] as $alternate) {
             $term = new Term();
-            $term->setTermText($alternate);
+            $term->setValue($alternate);
             $term->setPreferred(false);
             $newConcept->addTerm($term);
             $em->persist($term);

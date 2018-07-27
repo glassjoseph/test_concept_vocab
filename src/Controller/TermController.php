@@ -71,14 +71,14 @@ class TermController extends AbstractController {
 
 
         $termID = $request->query->get('concept_id');
-        $termText = $request->query->get('term_text');
+        $value = $request->query->get('value');
         $preferred = $request->query->get('preferred') === 'true';
         $languageID = $request->query->get('language_id');
 
 
         // TODO: find or create new term
         $term = new Term();
-        $term->setTermText($termText);
+        $term->setValue($value);
         $term->setPreferred($preferred);
 
         $term->addTerm($term);
@@ -124,14 +124,14 @@ class TermController extends AbstractController {
 
         // $termID = $request->query->get('concept_id');
 
-        $termText = $request->query->get('term_text');
+        $value = $request->query->get('value');
         $preferred = $request->query->get('preferred');
         $languageID = $request->query->get('language_id');
 
 
         // TODO: find or create new term
         $term = new Term();
-        $term->setTermText($termText);
+        $term->setValue($value);
         $term->setPreferred($preferred);
         $term->addTerm($term);
         $entityManager->persist($term);

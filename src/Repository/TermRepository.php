@@ -22,7 +22,7 @@ class TermRepository extends ServiceEntityRepository {
      */
     public function findByText($text) {
         return $this->createQueryBuilder('t')
-            ->andWhere('lower(t.term_text) LIKE lower(:text)')
+            ->andWhere('lower(t.value) LIKE lower(:text)')
             ->setParameter('text', $text)
             ->setMaxResults(20)
             ->getQuery()

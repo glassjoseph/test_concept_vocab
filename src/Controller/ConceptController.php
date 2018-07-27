@@ -33,7 +33,7 @@ class ConceptController extends AbstractController {
         $conceptArray =  [];
         foreach ($concepts->findAll() as $concept) {
             $term = $concept->getTerms()[0];
-            $conceptArray[] = ['id' => $concept->getID(), 'term' => $term ? $term->getTermText() : null];
+            $conceptArray[] = ['id' => $concept->getID(), 'term' => $term ? $term->getvalue() : null];
         }
 
         return $this->json([
@@ -64,7 +64,7 @@ class ConceptController extends AbstractController {
     /**
      * @Route("/concepts/new", methods={"GET"}, name="new_concept")
      */
-    // * @Route("/concepts/new/{term_text}.{age}.{gender}", defaults={"term_text"="Americans", "preferred"=0}, methods={"GET"}, name="new_concept")
+    // * @Route("/concepts/new/{value}.{age}.{gender}", defaults={"value"="Americans", "preferred"=0}, methods={"GET"}, name="new_concept")
     public function new(Request $request) {
         $repository = $this->getDoctrine()->getRepository(Concept::class);
 
@@ -76,7 +76,7 @@ class ConceptController extends AbstractController {
 
 
         $conceptID = $request->query->get('concept_id');
-        $termText = $request->query->get('term_text');
+        $termValue = $request->query->get('value');
         $preferred = $request->query->get('preferred') === 'true';
         $languageID = $request->query->get('language_id');
 
@@ -89,7 +89,7 @@ class ConceptController extends AbstractController {
 
         // TODO: find or create new term
         $term = new Term();
-        $term->setTermText($termText);
+        $term->setValue($termValue);
         $term->setPreferred($preferred);
 
         $concept->addTerm($term);
@@ -111,7 +111,6 @@ class ConceptController extends AbstractController {
         $conceptSources = $this->getDoctrine()->getRepository(ConceptSource::class);
         $categories = $this->getDoctrine()->getRepository(Category::class);
         $terms = $this->getDoctrine()->getRepository(Term::class);
-
 
         return $this->json([
             'message' => 'Welcome to the concept creation API!',
@@ -152,14 +151,14 @@ class ConceptController extends AbstractController {
 
         // $conceptID = $request->query->get('concept_id');
 
-        $termText = $request->query->get('term_text');
+        $value = $request->query->get('value');
         $preferred = $request->query->get('preferred');
         $languageID = $request->query->get('language_id');
 
 
         // TODO: find or create new term
         $term = new Term();
-        $term->setTermText($termText);
+        $term->setValue($value);
         $term->setPreferred($preferred);
 
         $concept->addTerm($term);
@@ -202,7 +201,7 @@ class ConceptController extends AbstractController {
         ]);
 
 
-        // $termText = $request->query->get('term_text');
+        // $value = $request->query->get('value');
         // $preferred = (bool) $request->query->get('preferred');
         // $languageID = $request->query->get('language_id');
         // $conceptID = $request->query->get('concept_id');
@@ -215,7 +214,7 @@ class ConceptController extends AbstractController {
         // $concept = $concept ?? new Concept();
         //
         // $term = new Term();
-        // $term->setTermText($termText);
+        // $term->setValue($value);
         // $term->setPreferred($preferred);
         //
         // $concept->addTerm($term);
@@ -269,8 +268,10 @@ class ConceptController extends AbstractController {
         $repository = $this->getDoctrine()->getRepository(Concept::class);
         $entityManager = $this->getDoctrine()->getManager();
 
-        require('/Users/josephglass/.composer/vendor/autoload.php');
-        \Psy\Shell::debug(get_defined_vars(), $this);
+        $repository->getPreferredTerms();
+
+        // require('/Users/josephglass/.composer/vendor/autoload.php');
+        // \Psy\Shell::debug(get_defined_vars(), $this);
 
         // $terms = [];
         // foreach ($concept->getTerms() as $term) {
@@ -279,7 +280,7 @@ class ConceptController extends AbstractController {
 
         // $relatedConcepts = [];
         // foreach ($concept->getRelatedConcepts() as $relatedConcept) {
-        //     $relatedConcepts[] = [$relatedConcept->getTerms()->first()->getID() => $relatedConcept->getTerms()->first()->getTermText()];  // will probably want preferred term
+        //     $relatedConcepts[] = [$relatedConcept->getTerms()->first()->getID() => $relatedConcept->getTerms()->first()->getvalue()];  // will probably want preferred term
         // }
 
         return $this->json([
