@@ -41,7 +41,7 @@ class Concept
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="concepts")
      */
-    private $concept_category;
+    private $conceptCategories;
 
 
     /**
@@ -87,7 +87,7 @@ class Concept
         $this->conceptSources = new ArrayCollection();
         $this->terms = new ArrayCollection();
         $this->conceptProperties = new ArrayCollection();
-        $this->concept_category = new ArrayCollection();
+        $this->conceptCategories = new ArrayCollection();
         $this->relatedConcepts = new ArrayCollection();
         $this->broaderConcepts = new ArrayCollection();
     }   // check to ensure defaults carry through
@@ -193,21 +193,21 @@ class Concept
     /**
      * @return Collection|Category[]
      */
-    public function getConceptCategory(): Collection {
-        return $this->concept_category;
+    public function getConceptCategories(): Collection {
+        return $this->conceptCategories;
     }
 
-    public function addConceptCategory(Category $conceptCategory): self {
-        if (!$this->concept_category->contains($conceptCategory)) {
-            $this->concept_category[] = $conceptCategory;
+    public function addConceptCategory(Category $category): self {
+        if (!$this->conceptCategories->contains($category)) {
+            $this->conceptCategories[] = $category;
         }
 
         return $this;
     }
 
-    public function removeConceptCategory(Category $conceptCategory): self {
-        if ($this->concept_category->contains($conceptCategory)) {
-            $this->concept_category->removeElement($conceptCategory);
+    public function removeConceptCategory(Category $category): self {
+        if ($this->conceptCategories->contains($category)) {
+            $this->conceptCategories->removeElement($category);
         }
 
         return $this;
@@ -245,6 +245,7 @@ class Concept
             $array["related_concepts"] = $relatedConcepts;
             $array["broader_concepts"] = $broaderConcepts;
             $array["narrower_concepts"] = $narrowerConcepts;
+            $array["categories"] = $this->getConceptCategories()[0] ? $this->getConceptCategories()[0]->getValue() : null;
         }
 
         return $array;

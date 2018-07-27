@@ -39,7 +39,7 @@ class Category
     private $range;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="concept_category")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="conceptCategory")
      */
     private $concepts;
 
