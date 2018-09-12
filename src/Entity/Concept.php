@@ -72,10 +72,10 @@ class Concept
 
      /**
       * @ORM\ManyToMany(targetEntity="App\Entity\Concept")
-      * @ORM\JoinTable(name="broader_concept",
-      *     joinColumns={@ORM\JoinColumn(name="broader_id", referencedColumnName="id")},
-      *     inverseJoinColumns={@ORM\JoinColumn(name="narrower_id", referencedColumnName="id")})
       */
+      // * @ORM\JoinTable(name="broader_concept",
+      // *     joinColumns={@ORM\JoinColumn(name="broader_id", referencedColumnName="id")},
+      // *     inverseJoinColumns={@ORM\JoinColumn(name="narrower_id", referencedColumnName="id")})
      private $narrowerConcepts;
 
      // not needed for narrower?
